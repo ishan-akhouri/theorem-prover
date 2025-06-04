@@ -1,0 +1,41 @@
+.
+├── CMakeLists.txt
+├── LICENSE
+├── project_structure.txt
+├── README.md
+├── scripts
+├── src
+│   ├── proof
+│   │   ├── goal_manager.cpp
+│   │   ├── goal_manager.hpp
+│   │   ├── proof_state.cpp
+│   │   ├── proof_state.hpp
+│   │   ├── tactic.cpp
+│   │   └── tactic.hpp
+│   ├── rule
+│   │   ├── proof_rule.cpp
+│   │   └── proof_rule.hpp
+│   ├── term
+│   │   ├── substitution.cpp
+│   │   ├── substitution.hpp
+│   │   ├── term_db.cpp
+│   │   ├── term_db.hpp
+│   │   ├── term_named.cpp
+│   │   └── term_named.hpp
+│   ├── type
+│   │   ├── type.cpp
+│   │   └── type.hpp
+│   └── utils
+│       ├── gensym.hpp
+│       └── hash.hpp
+└── tests
+    ├── test_core_architecture.cpp
+    ├── test_goal_manager.cpp
+    ├── test_proof_rule.cpp
+    ├── test_proof_state.cpp
+    ├── test_substitution.cpp
+    ├── test_tactic.cpp
+    ├── test_term_conversion_roundtrip.cpp
+    └── test_type.cpp
+
+9 directories, 30 files
