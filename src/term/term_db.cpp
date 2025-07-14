@@ -1,5 +1,6 @@
 #include "term_db.hpp"
 #include "../utils/hash.hpp"
+#include <set>
 #include <functional>
 
 namespace theorem_prover
@@ -312,6 +313,121 @@ namespace theorem_prover
     TermDBPtr make_implies(TermDBPtr antecedent, TermDBPtr consequent)
     {
         return std::make_shared<ImpliesDB>(antecedent, consequent);
+    }
+
+    // Variable discovery utilities
+    std::set<std::size_t> find_all_variables(const TermDBPtr &term, std::size_t depth)
+    {
+        std::set<std::size_t> variables;
+
+        switch (term->kind())
+        {
+        case TermDB::TermKind::VARIABLE:
+        {
+            auto var = std::dynamic_pointer_cast<VariableDB>(term);
+            if (var->index() >= depth)
+            {
+                // Free variable - adjust for current depth
+                variables.insert(var->index() - depth);
+            }
+            break;
+        }
+        case TermDB::TermKind::FUNCTION_APPLICATION:
+        {
+            auto func = std::dynamic_pointer_cast<FunctionApplicationDB>(term);
+            for (const auto &arg : func->arguments())
+            {
+                auto arg_vars = find_all_variables(arg, depth);
+                variables.insert(arg_vars.begin(), arg_vars.end());
+            }
+            break;
+        }
+        case TermDB::TermKind::FORALL:
+        {
+            auto forall = std::dynamic_pointer_cast<ForallDB>(term);
+            auto body_vars = find_all_variables(forall->body(), depth + 1);
+            variables.insert(body_vars.begin(), body_vars.end());
+            break;
+        }
+        case TermDB::TermKind::EXISTS:
+        {
+            auto exists = std::dynamic_pointer_cast<ExistsDB>(term);
+            auto body_vars = find_all_variables(exists->body(), depth + 1);
+            variables.insert(body_vars.begin(), body_vars.end());
+            break;
+        }
+        case TermDB::TermKind::AND:
+        {
+            auto and_term = std::dynamic_pointer_cast<AndDB>(term);
+            auto left_vars = find_all_variables(and_term->left(), depth);
+            auto right_vars = find_all_variables(and_term->right(), depth);
+            variables.insert(left_vars.begin(), left_vars.end());
+            variables.insert(right_vars.begin(), right_vars.end());
+            break;
+        }
+        case TermDB::TermKind::OR:
+        {
+            auto or_term = std::dynamic_pointer_cast<OrDB>(term);
+            auto left_vars = find_all_variables(or_term->left(), depth);
+            auto right_vars = find_all_variables(or_term->right(), depth);
+            variables.insert(left_vars.begin(), left_vars.end());
+            variables.insert(right_vars.begin(), right_vars.end());
+            break;
+        }
+        case TermDB::TermKind::NOT:
+        {
+            auto not_term = std::dynamic_pointer_cast<NotDB>(term);
+            auto body_vars = find_all_variables(not_term->body(), depth);
+            variables.insert(body_vars.begin(), body_vars.end());
+            break;
+        }
+        case TermDB::TermKind::IMPLIES:
+        {
+            auto implies = std::dynamic_pointer_cast<ImpliesDB>(term);
+            auto ant_vars = find_all_variables(implies->antecedent(), depth);
+            auto cons_vars = find_all_variables(implies->consequent(), depth);
+            variables.insert(ant_vars.begin(), ant_vars.end());
+            variables.insert(cons_vars.begin(), cons_vars.end());
+            break;
+        }
+        case TermDB::TermKind::CONSTANT:
+            // Constants have no variables
+            break;
+        }
+
+        return variables;
+    }
+
+    std::size_t get_max_variable_index(const TermDBPtr &term, std::size_t depth)
+    {
+        auto variables = find_all_variables(term, depth);
+        if (variables.empty())
+        {
+            return 0;
+        }
+        return *variables.rbegin(); // Maximum element
+    }
+
+    bool is_equality(const TermDBPtr &term)
+    {
+        if (term->kind() != TermDB::TermKind::FUNCTION_APPLICATION)
+        {
+            return false;
+        }
+
+        auto func_app = std::dynamic_pointer_cast<FunctionApplicationDB>(term);
+        return func_app->symbol() == "=" && func_app->arguments().size() == 2;
+    }
+
+    std::pair<TermDBPtr, TermDBPtr> get_equality_sides(const TermDBPtr &term)
+    {
+        if (!is_equality(term))
+        {
+            throw std::runtime_error("Term is not an equality");
+        }
+
+        auto func_app = std::dynamic_pointer_cast<FunctionApplicationDB>(term);
+        return {func_app->arguments()[0], func_app->arguments()[1]};
     }
 
 } // namespace theorem_prover

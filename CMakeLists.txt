@@ -16,6 +16,15 @@ set(SOURCES
     src/rule/proof_rule.cpp
     src/proof/tactic.cpp
     src/proof/goal_manager.cpp
+    src/term/unification.cpp
+    src/resolution/clause.cpp
+    src/resolution/cnf_converter.cpp
+    src/resolution/resolution_prover.cpp
+    src/resolution/indexing.cpp
+    src/term/ordering.cpp
+    src/term/rewriting.cpp
+    src/completion/critical_pairs.cpp
+    src/completion/knuth_bendix.cpp
 )
 
 # Test executables
@@ -27,6 +36,21 @@ add_executable(test_proof_rule tests/test_proof_rule.cpp ${SOURCES})
 add_executable(test_tactic tests/test_tactic.cpp ${SOURCES})
 add_executable(test_core_architecture tests/test_core_architecture.cpp ${SOURCES})
 add_executable(test_goal_manager tests/test_goal_manager.cpp ${SOURCES})
+add_executable(test_unification tests/test_unification.cpp ${SOURCES})
+add_executable(test_clause tests/test_clause.cpp ${SOURCES})
+add_executable(test_cnf_converter tests/test_cnf_converter.cpp ${SOURCES})
+add_executable(test_resolution_prover tests/test_resolution_prover.cpp ${SOURCES})
+add_executable(test_variable_standardization tests/test_variable_standardization.cpp ${SOURCES})
+add_executable(test_subsumption tests/test_subsumption.cpp ${SOURCES})
+add_executable(test_indexing_performance tests/test_indexing_performance.cpp ${SOURCES})
+add_executable(test_ordering tests/test_ordering.cpp ${SOURCES})
+add_executable(test_rewriting tests/test_rewriting.cpp ${SOURCES})
+add_executable(test_paramodulation tests/test_paramodulation.cpp ${SOURCES})
+add_executable(test_resolution_comparison tests/test_resolution_comparison.cpp ${SOURCES})
+add_executable(test_critical_pairs tests/test_critical_pairs.cpp ${SOURCES})
+add_executable(test_knuth_bendix tests/test_knuth_bendix.cpp ${SOURCES})
+add_executable(test_kb_resolution_benchmark tests/test_kb_resolution_benchmark.cpp ${SOURCES})
+add_executable(test_challenging_benchmark tests/test_challenging_benchmark.cpp ${SOURCES})
 
 # Tests
 enable_testing()

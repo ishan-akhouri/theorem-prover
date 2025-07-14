@@ -1,4 +1,3 @@
-// tests/test_tactic.cpp
 #include <iostream>
 #include <cassert>
 #include <memory>

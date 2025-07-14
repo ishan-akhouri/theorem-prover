@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <set>
 #include <vector>
 #include <functional>
 
@@ -222,7 +223,30 @@ namespace theorem_prover
         TermDBPtr left_;
         TermDBPtr right_;
     };
+    // Add to term_db.hpp
+    template <typename T>
+    bool equal_cast(const TermDB &self, const TermDB &other,
+                    std::function<bool(const T &, const T &)> comparator)
+    {
+        // First check if kinds match
+        if (self.kind() != other.kind())
+        {
+            return false;
+        }
 
+        // Attempt dynamic cast to the specific type
+        const T *self_cast = dynamic_cast<const T *>(&self);
+        const T *other_cast = dynamic_cast<const T *>(&other);
+
+        // If either cast fails, types don't match
+        if (!self_cast || !other_cast)
+        {
+            return false;
+        }
+
+        // Apply the specific comparison function
+        return comparator(*self_cast, *other_cast);
+    }
     /**
      * Logical disjunction (φ ∨ ψ)
      */
@@ -296,5 +320,11 @@ namespace theorem_prover
     TermDBPtr make_or(TermDBPtr left, TermDBPtr right);
     TermDBPtr make_not(TermDBPtr body);
     TermDBPtr make_implies(TermDBPtr antecedent, TermDBPtr consequent);
+    // Equality utilities
+    bool is_equality(const TermDBPtr &term);
+    std::pair<TermDBPtr, TermDBPtr> get_equality_sides(const TermDBPtr &term);
+    // Variable discovery utilities
+    std::set<std::size_t> find_all_variables(const TermDBPtr &term, std::size_t depth = 0);
+    std::size_t get_max_variable_index(const TermDBPtr &term, std::size_t depth = 0);
 
 } // namespace theorem_prover

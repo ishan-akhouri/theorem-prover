@@ -1,0 +1,75 @@
+.
+├── CMakeLists.txt
+├── LICENSE
+├── project_structure.txt
+├── README.md
+├── src
+│   ├── completion
+│   │   ├── critical_pairs.cpp
+│   │   ├── critical_pairs.hpp
+│   │   ├── knuth_bendix.cpp
+│   │   └── knuth_bendix.hpp
+│   ├── proof
+│   │   ├── goal_manager.cpp
+│   │   ├── goal_manager.hpp
+│   │   ├── proof_state.cpp
+│   │   ├── proof_state.hpp
+│   │   ├── tactic.cpp
+│   │   └── tactic.hpp
+│   ├── resolution
+│   │   ├── clause.cpp
+│   │   ├── clause.hpp
+│   │   ├── cnf_converter.cpp
+│   │   ├── cnf_converter.hpp
+│   │   ├── indexing.cpp
+│   │   ├── indexing.hpp
+│   │   ├── resolution_prover.cpp
+│   │   └── resolution_prover.hpp
+│   ├── rule
+│   │   ├── proof_rule.cpp
+│   │   └── proof_rule.hpp
+│   ├── term
+│   │   ├── ordering.cpp
+│   │   ├── ordering.hpp
+│   │   ├── rewriting.cpp
+│   │   ├── rewriting.hpp
+│   │   ├── substitution.cpp
+│   │   ├── substitution.hpp
+│   │   ├── term_db.cpp
+│   │   ├── term_db.hpp
+│   │   ├── term_named.cpp
+│   │   ├── term_named.hpp
+│   │   ├── unification.cpp
+│   │   └── unification.hpp
+│   ├── type
+│   │   ├── type.cpp
+│   │   └── type.hpp
+│   └── utils
+│       ├── gensym.hpp
+│       └── hash.hpp
+└── tests
+    ├── test_challenging_benchmark.cpp
+    ├── test_clause.cpp
+    ├── test_cnf_converter.cpp
+    ├── test_core_architecture.cpp
+    ├── test_critical_pairs.cpp
+    ├── test_goal_manager.cpp
+    ├── test_indexing_performance.cpp
+    ├── test_kb_resolution_benchmark.cpp
+    ├── test_knuth_bendix.cpp
+    ├── test_ordering.cpp
+    ├── test_paramodulation.cpp
+    ├── test_proof_rule.cpp
+    ├── test_proof_state.cpp
+    ├── test_resolution_comparison.cpp
+    ├── test_resolution_prover.cpp
+    ├── test_rewriting.cpp
+    ├── test_substitution.cpp
+    ├── test_subsumption.cpp
+    ├── test_tactic.cpp
+    ├── test_term_conversion_roundtrip.cpp
+    ├── test_type.cpp
+    ├── test_unification.cpp
+    └── test_variable_standardization.cpp
+
+10 directories, 63 files
